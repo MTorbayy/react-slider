@@ -10,30 +10,52 @@ const [slideAnim, setSlideAnim] = useState({
     inProgress: false //va permettre d'empecher que l'animation se lance trop vite si les clics sont trop rapprochés
 })
 
-console.log(slideAnim)
 
 const nextSlide = () => {
 
     let newObj = {...slideAnim} 
 
-    if(slideAnim.index < dataSlider.length){
+    if(slideAnim.index < dataSlider.length && !slideAnim.inProgress){
         newObj.index = newObj.index + 1
         newObj.inProgress = true
         setSlideAnim(newObj)
-    } else if (slideAnim.index === dataSlider.length) {
+
+        setTimeout(() => {
+            newObj.index = newObj.index + 1
+            newObj.inProgress = false
+            setSlideAnim(newObj)
+        }, 1000)
+
+    } else if (slideAnim.index === dataSlider.length && !slideAnim.inProgress) {
         newObj.index = 1
         newObj.inProgress = true
         setSlideAnim(newObj)
+
+        setTimeout(() => {
+            newObj.index = 1
+            newObj.inProgress = false
+            setSlideAnim(newObj)
+        }, 1000)
     }
 
     }
 
 
 const prevSlide = () => {
-    if(slideAnim.index > 1) {
+    if(slideAnim.index > 1 && !slideAnim.inProgress) {
+
         setSlideAnim({index: slideAnim.index - 1, inProgress: true})
-    } else if (slideAnim.index === 1) {
+
+        setTimeout(() => {
+            setSlideAnim({index: slideAnim.index - 1, inProgress: false})
+        }, 400)
+
+    } else if (slideAnim.index === 1 && !slideAnim.inProgress) {
         setSlideAnim({index: dataSlider.length, inProgress: true})
+
+        setTimeout(() => {
+            setSlideAnim({index: dataSlider.length, inProgress: false})
+        }, 400)
     }
 }
 
